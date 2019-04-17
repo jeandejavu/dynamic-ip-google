@@ -7,8 +7,8 @@ const readFileAsync = promisify(fs.readFile);
 const writeFileAsync = promisify(fs.writeFile);
 
 const pathFile = process.env.FILE_NAME;
-const user = process.env.USERNAME;
-const pass = process.env.PASSWORD;
+const user = process.env.GOOGLE_USERNAME;
+const pass = process.env.GOOGLE_PASSWORD;
 const urlAPI = `https://${user}:${pass}@domains.google.com/nic/update?`;
 
 const domains = process.env.DOMAINS.split(",");
@@ -24,7 +24,7 @@ async function updateDynamicDomain() {
         const domain = domains[i];
         const url = `${urlAPI}hostname=${domain}&myip=${pblicIp}`;
         console.log(`Atualizacao ${domain} para IP ${pblicIp}`);
-        await axios.get(url);
+        const data = await axios.get(url);
       }
 
       await writeFileAsync(pathFile, pblicIp, "utf8");
